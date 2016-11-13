@@ -7,16 +7,31 @@ public class NeuralNet {
     private OutputLayer outputLayer;
 
     private double learningRate;
+    private double targetError;
+    private double trainingError;
     private ActivationFunctions activationFunction;
+    private double[][] trainSet;
+    private double[] realOutputSet;
+    private ArrayList<Double> listOfMSE = new ArrayList<Double>();
+    private TrainingTypes trainType;
 
-    public void init() {
-        inputLayer = new InputLayer(2, 1);
-        HiddenLayer hiddenLayer1 = new HiddenLayer(3, 2, 3);
-        HiddenLayer hiddenLayer2 = new HiddenLayer(3, 3, 1);
+    public void init(int numberOfInputNeurons, int numberOfHiddenLayers, int numberOfNeuronsInHiddenLayer, int numberOfOutputNeurons) {
+        inputLayer = new InputLayer(numberOfInputNeurons, 1);
+        //HiddenLayer hiddenLayer1 = new HiddenLayer(3, 2, 3); 3 - количество нейронов 2 - количество нейронов на предыдущем слое 3 - количество нейронов на следующем слое
+        //HiddenLayer hiddenLayer2 = new HiddenLayer(3, 3, 1);
         hiddenLayers = new ArrayList<>();
-        hiddenLayers.add(hiddenLayer1);
-        hiddenLayers.add(hiddenLayer2);
-        outputLayer = new OutputLayer(1, 1);
+        for (int i = 0; i < numberOfHiddenLayers; i++) {
+            if (hiddenLayers.size() == 0) {
+                hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, inputLayer.getNeuronsCount(), numberOfNeuronsInHiddenLayer));
+            } else {
+                if (i != (numberOfHiddenLayers - 1)) {
+                    hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer));
+                } else {
+                    hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfOutputNeurons));
+                }
+            }
+        }
+        outputLayer = new OutputLayer(numberOfOutputNeurons, 1);
     }
 
     public InputLayer getInputLayer() {
@@ -51,10 +66,60 @@ public class NeuralNet {
         return activationFunction;
     }
 
-    public void printNet() {
+    public void setTrainSet(double[][] trainSet) {
+        this.trainSet = trainSet;
+    }
+
+    public void setRealOutputSet(double[] realOutputSet) {
+        this.realOutputSet = realOutputSet;
+    }
+
+    public void setTargetError(double targetError) {
+        this.targetError = targetError;
+    }
+
+    public void setTrainingError(double trainingError) {
+        this.trainingError = trainingError;
+    }
+
+    public void setActivationFunction(ActivationFunctions activationFunction) {
+        this.activationFunction = activationFunction;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    public void setTrainType(TrainingTypes trainType) {
+        this.trainType = trainType;
+    }
+
+    public double[][] getTrainSet() {
+        return trainSet;
+    }
+
+    public double[] getRealOutputSet() {
+        return realOutputSet;
+    }
+
+    public double getTargetError() {
+        return targetError;
+    }
+
+    public ArrayList<Double> getListOfMSE() {
+        return listOfMSE;
+    }
+
+    public TrainingTypes getTrainType() {
+        return trainType;
+    }
+
+    public void print() {
         inputLayer.printLayer();
-        System.out.println();
-        System.out.println("### HIDDEN LAYER ###");
+        if (hiddenLayers.size() > 0) {
+            System.out.println();
+            System.out.println("### HIDDEN LAYER ###");
+        }
         int h = 1;
         for (HiddenLayer hiddenLayer : hiddenLayers) {
             System.out.println("Hidden Layer #" + h);

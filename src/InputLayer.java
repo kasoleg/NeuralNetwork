@@ -8,7 +8,7 @@ public class InputLayer extends Layer {
 
         neurons = new ArrayList<>();
 
-        for (int i = 0; i < neuronsCount; i++) {
+        for (int i = 0; i < neuronsCount + 1; i++) {
             Neuron neuron = new Neuron();
             weightsInput = new ArrayList<>();
             for (int j = 0; j < inputsNumber; j++) {
@@ -20,14 +20,14 @@ public class InputLayer extends Layer {
     }
 
     @Override
-    public void printLayer(){
+    public void printLayer() {
         super.printLayer();
         System.out.println("### INPUT LAYER ###");
         int n = 1;
         for (Neuron neuron : neurons) {
             System.out.println("Neuron #" + n + ":");
             System.out.println("Input Weights:");
-            System.out.println(Arrays.deepToString( neuron.getWeightsInput().toArray() ));
+            System.out.println(Arrays.deepToString(neuron.getWeightsInput().toArray()));
             n++;
         }
     }

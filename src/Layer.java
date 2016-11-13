@@ -14,4 +14,8 @@ public abstract class Layer {
     public void setNeurons(List<Neuron> neurons) {
         this.neurons = neurons;
     }
+
+    public int getNeuronsCount() {
+        return this.neurons.size();
+    }
 }
