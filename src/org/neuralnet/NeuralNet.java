@@ -1,3 +1,5 @@
+package org.neuralnet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +12,13 @@ public class NeuralNet {
     private double targetError;
     private double trainingError;
     private ActivationFunctions activationFunction;
+    private ActivationFunctions activationFunctionOutputLayer;
     private double[][] trainSet;
     private double[] realOutputSet;
-    private ArrayList<Double> listOfMSE = new ArrayList<Double>();
+    private double[][] realMatrixOutputSet;
+    private ArrayList<Double> listOfMSE = new ArrayList<>();
     private TrainingTypes trainType;
+    private double errorMean;
 
     public void init(int numberOfInputNeurons, int numberOfHiddenLayers, int numberOfNeuronsInHiddenLayer, int numberOfOutputNeurons) {
         inputLayer = new InputLayer(numberOfInputNeurons, 1);
@@ -21,14 +26,10 @@ public class NeuralNet {
         //HiddenLayer hiddenLayer2 = new HiddenLayer(3, 3, 1);
         hiddenLayers = new ArrayList<>();
         for (int i = 0; i < numberOfHiddenLayers; i++) {
-            if (hiddenLayers.size() == 0) {
-                hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, inputLayer.getNeuronsCount(), numberOfNeuronsInHiddenLayer));
+            if (i != (numberOfHiddenLayers - 1)) {
+                hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer));
             } else {
-                if (i != (numberOfHiddenLayers - 1)) {
-                    hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer));
-                } else {
-                    hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfOutputNeurons));
-                }
+                hiddenLayers.add(new HiddenLayer(numberOfNeuronsInHiddenLayer, numberOfNeuronsInHiddenLayer, numberOfOutputNeurons));
             }
         }
         outputLayer = new OutputLayer(numberOfOutputNeurons, 1);
@@ -112,6 +113,30 @@ public class NeuralNet {
 
     public TrainingTypes getTrainType() {
         return trainType;
+    }
+
+    public double getErrorMean() {
+        return errorMean;
+    }
+
+    public ActivationFunctions getActivationFunctionOutputLayer() {
+        return activationFunctionOutputLayer;
+    }
+
+    public void setActivationFunctionOutputLayer(ActivationFunctions activationFunctionOutputLayer) {
+        this.activationFunctionOutputLayer = activationFunctionOutputLayer;
+    }
+
+    public double[][] getRealMatrixOutputSet() {
+        return realMatrixOutputSet;
+    }
+
+    public void setRealMatrixOutputSet(double[][] realMatrixOutputSet) {
+        this.realMatrixOutputSet = realMatrixOutputSet;
+    }
+
+    public void setErrorMean(double errorMean) {
+        this.errorMean = errorMean;
     }
 
     public void print() {

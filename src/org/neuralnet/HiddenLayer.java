@@ -1,3 +1,5 @@
+package org.neuralnet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,12 +10,14 @@ public class HiddenLayer extends Layer {
         List<Double> weightsOutput;
         neurons = new ArrayList<>();
 
-        for (int i = 0; i < neuronsCount; i++) {
+        for (int i = 0; i <= neuronsCount; i++) {
             Neuron neuron = new Neuron();
             weightsInput = new ArrayList<>();
             weightsOutput = new ArrayList<>();
-            for (int j = 0; j < inputsNumber; j++) {
-                weightsInput.add(neuron.initNeuron());
+            if (i > 0) {
+                for (int j = 0; j < inputsNumber; j++) {
+                    weightsInput.add(neuron.initNeuron());
+                }
             }
             neuron.setWeightsInput(weightsInput);
             for (int j = 0; j < outputsNumber; j++) {

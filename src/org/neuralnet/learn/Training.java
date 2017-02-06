@@ -1,9 +1,13 @@
+package org.neuralnet.learn;
+
+import org.neuralnet.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Training {
     private double error;
-    private double mse;
+    protected double mse;
 
     public NeuralNet train(NeuralNet n, int epochs) {
         List<Double> inputWeights;
@@ -113,7 +117,7 @@ public abstract class Training {
         return (1.0 / Math.pow(Math.cosh(v), 2.0));
     }
 
-    private double activationFunction(ActivationFunctions function, double value) {
+    protected double activationFunction(ActivationFunctions function, double value) {
         switch (function) {
             case STEP:
                 return functionStep(value);

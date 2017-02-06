@@ -1,10 +1,17 @@
+package org.neuralnet;
+
+import org.neuralnet.learn.Adaline;
+import org.neuralnet.learn.BackPropagation;
+import org.neuralnet.learn.Perceptron;
+
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
         Main test = new Main();
-        test.testPerceptron();
-        test.testAdaline();
+        //test.testPerceptron();
+        //test.testAdaline();
+        test.testBackpropagation();
     }
 
     public void testPerceptron() {
@@ -73,5 +80,39 @@ public class Main {
         System.out.println();
         System.out.println("---------ADALINE MSE BY EPOCH---------");
         System.out.println(Arrays.deepToString(net.getListOfMSE().toArray()).replace(" ", "\n"));
+    }
+
+    private void testBackpropagation() {
+        NeuralNet testNet = new NeuralNet();
+
+        testNet.init(2, 1, 3, 2);
+
+        System.out.println("---------BACKPROPAGATION INIT NET---------");
+
+        testNet.print();
+
+        // first column has BIAS
+        testNet.setTrainSet(new double[][]{{1.0, 1.0, 0.73}, {1.0, 1.0, 0.81}, {1.0, 1.0, 0.86},
+                {1.0, 1.0, 0.95}, {1.0, 0.0, 0.45}, {1.0, 1.0, 0.70},
+                {1.0, 0.0, 0.51}, {1.0, 1.0, 0.89}, {1.0, 1.0, 0.79}, {1.0, 0.0, 0.54}
+        });
+        testNet.setRealMatrixOutputSet(new double[][]{{1.0, 0.0}, {1.0, 0.0}, {1.0, 0.0},
+                {1.0, 0.0}, {1.0, 0.0}, {0.0, 1.0},
+                {0.0, 1.0}, {0.0, 1.0}, {0.0, 1.0}, {0.0, 1.0}
+        });
+        testNet.setTargetError(0.002);
+        testNet.setLearningRate(0.1);
+        testNet.setTrainType(TrainingTypes.BACK_PROPAGATION);
+        testNet.setActivationFunction(ActivationFunctions.SIGLOG);
+        testNet.setActivationFunctionOutputLayer(ActivationFunctions.LINEAR);
+
+        BackPropagation backPropagation = new BackPropagation();
+        backPropagation.train(testNet, 1000);
+
+        System.out.println();
+        System.out.println("---------BACKPROPAGATION TRAINED NET---------");
+
+        testNet.print();
+
     }
 }
